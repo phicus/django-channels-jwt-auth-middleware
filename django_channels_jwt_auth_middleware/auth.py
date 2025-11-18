@@ -45,17 +45,17 @@ class JWTAuthMiddleware:
         method to get user credentials from jwt token payload.
         defaults to user id.
         """
-        user_id = payload['user_id']
+        user_id = payload['username']
         return user_id
 
-    async def get_logged_in_user(self, user_id):
-        user = await self.get_user(user_id)
+    async def get_logged_in_user(self, username):
+        user = await self.get_user(username)
         return user
 
     @database_sync_to_async
-    def get_user(self, user_id):
+    def get_user(self, username):
         try:
-            return User.objects.get(id=user_id)
+            return User.objects.get(username=username)
         except User.DoesNotExist:
             return AnonymousUser()
 
